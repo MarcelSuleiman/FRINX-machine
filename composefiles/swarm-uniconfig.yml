@@ -56,6 +56,17 @@ services:
       - TRAEFIK_ENTRYPOINTS_CLISHELL_ADDRESS=:2022
       - TRAEFIK_PROVIDERS_DOCKER_SWARMMODE=true
       - TRAEFIK_PROVIDERS_DOCKER_WATCH=true
+      - TRAEFIK_API=true
+      - TRAEFIK_API_DASHBOARD=true
+      - TRAEFIK_API_DEBUG=true
+      - TRAEFIK_API_INSECURE=true
+    ports:
+      - target: 8080
+        published: 8082
+        mode: host
+      - target: 2022
+        published: 2022
+        mode: host
     configs:
       - source: traefik_dynamic_conf
         target: /etc/traefik/traefik_dynamic.yml
@@ -163,11 +174,9 @@ services:
         - traefik.http.services.uniconfig.loadbalancer.server.scheme=http
         - traefik.http.services.uniconfig.loadbalancer.passhostheader=true
         - traefik.http.routers.uniconfig.tls=true
-
         - traefik.tcp.routers.clishell.entrypoints=clishell
         - traefik.tcp.routers.clishell.rule=HostSNI(`*`)
         - traefik.tcp.routers.clishell.service=cli-shell-svc
-        - traefik.http.services.cli-shell-svc.loadBalancer.sticky.cookie.name=uniconfig_shell_id
         - traefik.tcp.services.cli-shell-svc.loadbalancer.server.port=2022
       <<: *placement
       restart_policy:

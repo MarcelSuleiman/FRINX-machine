@@ -101,6 +101,10 @@ services:
     image: ssh_uniconfig:test
     volumes: 
       - ${UF_CONFIG_PATH}/uniconfig/config.toml:/root/config.toml
+    deploy:
+      labels: 
+        - traefik.enable=false
+      <<: *placement
     ports:
       - target: 8083
         published: 8083
