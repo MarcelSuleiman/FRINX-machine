@@ -98,15 +98,15 @@
     "cliShell": {
         "sshServer": {
             // Flag that determines if ssh server will be started or not.
-            "enabled": false,
+            "enabled": true,
             // Port bind to ssh server.
             "port": 2022,
             // IP address bind to ssh server.
-            "inetAddress": "127.0.0.1",
+            "inetAddress": "0.0.0.0",
             // Basic username + password authentication.
             "usernamePasswordAuth": {
                 "username": "admin",
-                "password": "secret"
+                "password": "admin"
             }
         },
         // Flag that determines if uniconfig-shell provides scrolling of output

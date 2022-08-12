@@ -1,0 +1,4 @@
+host = "uniconfig"
+port = 2022
+user = "admin"
+password = "admin"

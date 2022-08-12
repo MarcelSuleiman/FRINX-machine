@@ -52,6 +52,8 @@ services:
       - TRAEFIK_PROVIDERS_FILE_WATCH=true
       - TRAEFIK_ENTRYPOINTS_UNICONFIG=true
       - TRAEFIK_ENTRYPOINTS_UNICONFIG_ADDRESS=:8181
+      - TRAEFIK_ENTRYPOINTS_CLISHELL=true
+      - TRAEFIK_ENTRYPOINTS_CLISHELL_ADDRESS=:2022
       - TRAEFIK_PROVIDERS_DOCKER_SWARMMODE=true
       - TRAEFIK_PROVIDERS_DOCKER_WATCH=true
     configs:
@@ -161,6 +163,12 @@ services:
         - traefik.http.services.uniconfig.loadbalancer.server.scheme=http
         - traefik.http.services.uniconfig.loadbalancer.passhostheader=true
         - traefik.http.routers.uniconfig.tls=true
+
+        - traefik.tcp.routers.clishell.entrypoints=clishell
+        - traefik.tcp.routers.clishell.rule=HostSNI(`*`)
+        - traefik.tcp.routers.clishell.service=cli-shell-svc
+        - traefik.http.services.cli-shell-svc.loadBalancer.sticky.cookie.name=uniconfig_shell_id
+        - traefik.tcp.services.cli-shell-svc.loadbalancer.server.port=2022
       <<: *placement
       restart_policy:
         condition: any

@@ -25,7 +25,7 @@ x-traefik-label: &traefik_labels
 
 services:
   krakend:
-    image: frinx/krakend:1.0.4
+    image: frinx/krakend:test
     # user: root
     logging: *logging_loki    
     environment:
@@ -70,6 +70,9 @@ services:
     ports:
       - target: 8080
         published: ${KRAKEND_PORT}
+        mode: host
+      - target: 8088
+        published: 8088
         mode: host  
     ulimits:
       nofile:
@@ -93,6 +96,15 @@ services:
         limits:
           cpus: ${KD_RES_LIMIT_CPUS}
           memory: ${KD_RES_LIMIT_MEM}
+
+  webssh:
+    image: ssh_uniconfig:test
+    volumes: 
+      - ${UF_CONFIG_PATH}/uniconfig/config.toml:/root/config.toml
+    ports:
+      - target: 8083
+        published: 8083
+        mode: host  
 
   conductor-server:
     image: frinx/uniflow-conductor-server:1.0.8
